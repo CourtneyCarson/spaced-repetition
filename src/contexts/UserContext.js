@@ -147,6 +147,13 @@ export class UserProvider extends Component {
     const value = {
       user: this.state.user,
       error: this.state.error,
+      language: this.state.language, 
+      words: this.state.words, 
+      currentWord: this.state.currentWord, 
+      nextWord: this.state.nextWord, 
+      guess: this.state.guess, 
+      totalScore: this.state.totalScore, 
+    
       setError: this.setError,
       clearError: this.clearError,
       setUser: this.setUser,
