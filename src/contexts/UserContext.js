@@ -6,11 +6,27 @@ import IdleService from '../services/idle-service'
 const UserContext = React.createContext({
   user: {},
   error: null,
+// add language contexts
+  language: null, 
+  words: null, 
+  currentWord: {}, 
+  nextWord: {}, 
+  guess: null, 
+  totalScore: null, 
+
+
   setError: () => {},
   clearError: () => {},
   setUser: () => {},
   processLogin: () => {},
-  processLogout: () => {},
+  processLogout: () => { },
+  // language functions 
+  setLanguage: () => { },
+  setWords: () => {},
+  setCurrentWord: () => {},
+  setNextWord: () => {},
+  setGuess: () => {},
+  setTotalScore: () => {},
 })
 
 export default UserContext
@@ -46,6 +62,32 @@ export class UserProvider extends Component {
     IdleService.unRegisterIdleResets()
     TokenService.clearCallbackBeforeExpiry()
   }
+
+// add set functions 
+  
+  setLanguage = language => {
+    this.setState({language})
+  }
+
+  setWords = words => {
+    this.setState({words})
+  }
+
+  setCurrentWord = currentWord => {
+    this.setState({currentWord})
+  }
+
+  setNextWord = nextWord => {
+    this.setState({nextWord})
+  }
+  setGuess = guess => {
+    this.setState({guess})
+  }
+  
+  setTotalScore = totalScore => {
+    this.setState({totalScore})
+  }
+
 
   setError = error => {
     console.error(error)
@@ -110,6 +152,13 @@ export class UserProvider extends Component {
       setUser: this.setUser,
       processLogin: this.processLogin,
       processLogout: this.processLogout,
+      //add set functions 
+      setLanguage: this.setLanguage,
+      setWords: this.setWords,
+      setCurrentWord: this.setCurrentWord,
+      setNextWord: this.setNextWord,
+      setGuess: this.setGuess,
+      setTotalScore: this.setTotalScore,
     }
     return (
       <UserContext.Provider value={value}>
