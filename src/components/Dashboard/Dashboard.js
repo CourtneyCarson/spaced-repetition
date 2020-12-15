@@ -4,6 +4,7 @@ import config from '../../config';
 import TokenService from '../../services/token-service';
 import { Link } from 'react-router-dom';
 import './Dashboard.css'
+import Button from '../Button/Button'
 
 // correct answer count 
 //incorrect answer count 
@@ -76,11 +77,11 @@ class Dashboard extends Component {
     console.log(this.context);
     return (
       //context.language if/else statement
-      <div >
+      <div className='dashboard'>
         <h2 className='dash-language-header'>{this.context.language ? this.context.language.name : null}</h2>
         {/* link to learning page w/ button */}
         <Link to='/learn'>
-          <button className='start-button'>Start Practicing</button>
+          <Button className='start-button'>Start Practicing</Button>
         </Link>
         <h3 className='dash-list-title'>Words To Practice</h3>
         <div className='word-list'>

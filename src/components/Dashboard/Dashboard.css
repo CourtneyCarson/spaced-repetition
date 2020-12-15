@@ -1,18 +1,14 @@
-.word-list {
-  color:white;
+.dashboard {
+  display: flex;
+  flex-wrap: wrap; 
+  flex-direction:column;
+  background: hotpink;
 }
 
-
+/* Norwegian */
 .dash-language-header {
   color:white;
-}
-
-.total-correct {
-  color:pink;
-}
-
-.dash-list-title {
-  color:yellow;
+  justify-items: center;
 }
 
 .start-button {
@@ -25,10 +21,53 @@
   font-size: 1.5em;
 }
 
+
+
+/* words to practice */
+.dash-list-title {
+  color:yellow;
+  background:pink;
+}
+
+/* Norwegian words */
+.word-list li{
+  background:green;
+  color:white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 5;
+  flex-wrap: wrap;
+  margin: 2em 0 0 
+}
+
+.word-list h4 {
+  min-width: 150px;
+  /* margin: 0.5em 0.8em; */
+}
+
+.word-list div {
+  display: flex;
+  flex-direction: column;
+  text-align:right;
+  padding: .1em 1em;
+}
+/* .word-list div {
+  padding: .5em 1em;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+} */
+
+
 .correct-count {
-  color: lightgreen;
+  color: lightgreen; 
 }
 
 .incorrect-count {
   color:yellow;
+}
+
+.total-correct {
+  color:pink;
 }
