@@ -3,6 +3,7 @@ import UserContext from '../../contexts/UserContext';
 import config from '../../config';
 import TokenService from '../../services/token-service';
 import { Link } from 'react-router-dom';
+import './Dashboard.css'
 
 // correct answer count 
 //incorrect answer count 
@@ -14,8 +15,8 @@ function ListOfWords(props) {
     <li>
       <h4>{props.word.original}</h4>
       <div>
-        <span>correct answer count: {props.word.correct_count}</span>
-        <span>incorrect answer count: {props.word.incorrect_count}</span>
+        <span className='correct-count'>correct answer count: {props.word.correct_count}</span>
+        <span className='incorrect-count'>incorrect answer count: {props.word.incorrect_count}</span>
       </div>
     </li>
   );
@@ -76,11 +77,12 @@ class Dashboard extends Component {
     return (
       //context.language if/else statement
       <div >
-        <h2>{this.context.language ? this.context.language.name : null}</h2>
+        <h2 className='dash-language-header'>{this.context.language ? this.context.language.name : null}</h2>
+        {/* link to learning page w/ button */}
         <Link to='/learn'>
-          <button>Start Practicing</button>
+          <button className='start-button'>Start Practicing</button>
         </Link>
-        <h3>Words To Practice</h3>
+        <h3 className='dash-list-title'>Words To Practice</h3>
         <div className='word-list'>
           {this.context.words ? this.generateWordList(this.context.words) : null}
         </div>
