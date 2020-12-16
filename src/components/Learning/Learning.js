@@ -13,16 +13,11 @@ class Learning extends Component {
     error: null,
     response: {},
   };
-
-  // add constructor to use formsubmit? 
+  // add constructor
   constructor(props) {
     super(props);
-
-    //bind? 
     this.submitForm = this.submitForm.bind(this);
   }
-
-
   //use context
   static contextType = UserContext;
 
@@ -54,6 +49,7 @@ class Learning extends Component {
 
   submitForm(event) {
     event.preventDefault();
+this.context.setCurrentWord(this.context.nextWord)
 
     fetch(`${config.API_ENDPOINT}/language/guess`,
       {
@@ -79,15 +75,25 @@ class Learning extends Component {
     if (this.context.nextWord && typeof this.context.nextWord.isCorrect !== undefined) {
       if (this.context.nextWord.isCorrect) {
         console.log('Congrats');
-        return 'Congrats!';
+        return 'You were correct! :D';
       }
       else {
         console.log('Incorrect!');
-        return 'Incorrect!';
+        return 'Good try, but not quite right :(';
       }
     }
   }
 
+
+  getResponseFeedback() {
+    let translation = this.context.words && this.context.currentWord ? this.context.words.find(word => word.original === this.context.currentWord.nextWord):null 
+    console.log(translation)
+    if (this.context.nextWord && typeof this.context.nextWord.isCorrect !== undefined) {
+      if (this.context.nextWord.isCorrect) {
+        return `The correct translation for ${this.context.currentWord.nextWord} is ${translation} and you guessed ${this.context.nextWord} `
+      }
+    }
+  }
   //generate current word
   //generate button?? 
   //get button text
@@ -121,9 +127,10 @@ class Learning extends Component {
           </form>
           <p>{this.getResponse()}</p>
           <h2>Translate the word:</h2><span>{this.context.nextWord ? this.context.nextWord.nextWord : null}</span>
-          <p>Your total score is: {this.context.nextWord ? this.context.nextWord.totalScore : null}</p>
+          <p className='DisplayScore'>Your total score is: {this.context.nextWord ? this.context.nextWord.totalScore : null}</p>
           <p>You have answered this word correctly {this.context.nextWord ? this.context.nextWord.wordCorrectCount : null} times.</p>
           <p>You have answered this word incorrectly {this.context.nextWord ? this.context.nextWord.wordIncorrectCount : null} times.</p>
+          <p>{this.getResponseFeedback()}</p>
         </main>
       </div>
     );
