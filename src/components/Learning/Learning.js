@@ -4,6 +4,7 @@ import config from '../../config';
 import TokenService from '../../services/token-service';
 import { Input, Label } from '../Form/Form';
 import Button from '../Button/Button';
+import './Learning.css';
 
 
 class Learning extends Component {
@@ -15,10 +16,10 @@ class Learning extends Component {
 
   // add constructor to use formsubmit? 
   constructor(props) {
-    super(props)
+    super(props);
 
     //bind? 
-    this.submitForm = this.submitForm.bind(this)
+    this.submitForm = this.submitForm.bind(this);
   }
 
 
@@ -67,17 +68,31 @@ class Learning extends Component {
       .then(response => {
         this.context.setNextWord(response);
         // this.setState({ response: response });
+        document.getElementById('learn-guess-input').value = '';
       });
   }
 
-// feedback if correct/incorrect?? 
-//clearFeedback?? 
+  // feedback if correct/incorrect?? 
+  //clearFeedback?? 
   // get response text 
+  getResponse() {
+    if (this.context.nextWord && typeof this.context.nextWord.isCorrect !== undefined) {
+      if (this.context.nextWord.isCorrect) {
+        console.log('Congrats');
+        return 'Congrats!';
+      }
+      else {
+        console.log('Incorrect!');
+        return 'Incorrect!';
+      }
+    }
+  }
+
   //generate current word
   //generate button?? 
-//get button text
+  //get button text
   //goto next
-  
+
 
 
   render() {
@@ -86,8 +101,8 @@ class Learning extends Component {
     //display form with input input#learn-guess-input 
     //display correct & incorrect count for word -- this.context.correctCount? wordCorrectCount - from response
     //button 
-    console.log(this.context.nextWord);
-    console.log(this.context.totalScore);
+    // console.log(this.context.nextWord);
+    // console.log(this.context.totalScore);
 
     return (
       <div className='learning'>
@@ -104,6 +119,7 @@ class Learning extends Component {
             />
             <Button type='submit'>Submit your answer</Button>
           </form>
+          <p>{this.getResponse()}</p>
           <h2>Translate the word:</h2><span>{this.context.nextWord ? this.context.nextWord.nextWord : null}</span>
           <p>Your total score is: {this.context.nextWord ? this.context.nextWord.totalScore : null}</p>
           <p>You have answered this word correctly {this.context.nextWord ? this.context.nextWord.wordCorrectCount : null} times.</p>
