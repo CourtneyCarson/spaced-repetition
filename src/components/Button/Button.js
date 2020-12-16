@@ -9,3 +9,6 @@ const Button = React.forwardRef(({ className, ...props }, ref) => {
 })
 
 export default Button
+
+// ref same role as value in normal html - 'reference' whatever button name is will be a reference
+// 

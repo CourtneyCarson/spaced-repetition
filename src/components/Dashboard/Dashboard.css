@@ -64,11 +64,11 @@
 }
 
 .incorrect-count {
-  color:yellow;
+  color:palevioletred;
 }
 
 .total-correct {
-  color:pink;
+  color:lightyellow;
   text-align:right;
   padding: .1em 1em ;
 

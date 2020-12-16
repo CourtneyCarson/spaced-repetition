@@ -10,7 +10,18 @@ class Learning extends Component {
   //create state
   state = {
     error: null,
+    response: {},
   };
+
+  // add constructor to use formsubmit? 
+  constructor(props) {
+    super(props)
+
+    //bind? 
+    this.submitForm = this.submitForm.bind(this)
+  }
+
+
   //use context
   static contextType = UserContext;
 
@@ -27,23 +38,46 @@ class Learning extends Component {
       })
       .then(response => response.json())
       .then(response => {
-        console.log(response.wordCorrectCount);
-        console.log(response);
-        // console.log(response.nextWord);
-        // console.log(response.totalScore);
+        // console.log(response.wordCorrectCount);
+        // console.log(response);
 
-        // console.log(this.context)
         //current total, total score, correct/incorrect count
         this.context.setNextWord(response);
         // this.context.setTotalScore(response.totalScore)
-        // this.context.setLanguage(response.language);
-        // this.context.setWords(response.words);
       })
       //catch error
       .catch(error => this.setState({ error: error }));
   }
 
+  // submit form / guess fetch request
 
+  submitForm(event) {
+    event.preventDefault();
+
+    fetch(`${config.API_ENDPOINT}/language/guess`,
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'authorization': `Bearer ${TokenService.getAuthToken()}`,
+        },
+        body: JSON.stringify({ guess: event.target.userinput.value })
+      })
+      .then(response => response.json())
+      .then(response => {
+        this.context.setNextWord(response);
+        // this.setState({ response: response });
+      });
+  }
+
+// feedback if correct/incorrect?? 
+//clearFeedback?? 
+  // get response text 
+  //generate current word
+  //generate button?? 
+//get button text
+  //goto next
+  
 
 
   render() {
@@ -53,15 +87,19 @@ class Learning extends Component {
     //display correct & incorrect count for word -- this.context.correctCount? wordCorrectCount - from response
     //button 
     console.log(this.context.nextWord);
+    console.log(this.context.totalScore);
+
     return (
       <div className='learning'>
         <main>
-          <form>
+          <form onSubmit={this.submitForm}>
             <Label htmlFor='learn-guess-input' className='learning-form-text'>
               What's the translation for this word?
           </Label>
             <Input className='text-box'
               id='learn-guess-input'
+              name="userinput"
+              type="text"
               required
             />
             <Button type='submit'>Submit your answer</Button>
@@ -70,7 +108,6 @@ class Learning extends Component {
           <p>Your total score is: {this.context.nextWord ? this.context.nextWord.totalScore : null}</p>
           <p>You have answered this word correctly {this.context.nextWord ? this.context.nextWord.wordCorrectCount : null} times.</p>
           <p>You have answered this word incorrectly {this.context.nextWord ? this.context.nextWord.wordIncorrectCount : null} times.</p>
-
         </main>
       </div>
     );

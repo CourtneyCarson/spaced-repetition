@@ -19,3 +19,5 @@ export default function PublicOnlyRoute({ component, ...props }) {
     />
   )
 }
+
+// react has trouble with private route, react needs to know if logged in to use private route 
