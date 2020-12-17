@@ -49,7 +49,8 @@ class Learning extends Component {
 
   submitForm(event) {
     event.preventDefault();
-this.context.setCurrentWord(this.context.nextWord)
+    this.context.setCurrentWord(this.context.nextWord);
+    this.context.setGuess(event.target.userinput.value);
 
     fetch(`${config.API_ENDPOINT}/language/guess`,
       {
@@ -86,14 +87,20 @@ this.context.setCurrentWord(this.context.nextWord)
 
 
   getResponseFeedback() {
-    let translation = this.context.words && this.context.currentWord ? this.context.words.find(word => word.original === this.context.currentWord.nextWord):null 
-    console.log(translation)
-    if (this.context.nextWord && typeof this.context.nextWord.isCorrect !== undefined) {
-      if (this.context.nextWord.isCorrect) {
-        return `The correct translation for ${this.context.currentWord.nextWord} is ${translation} and you guessed ${this.context.nextWord} `
-      }
+    // let translation = this.context.words && this.context.currentWord ? this.context.words.find(word => word.original === this.context.currentWord.nextWord) : null;
+    console.log(this.context.guess);
+    // console.log(translation)
+    if (this.context.nextWord && typeof this.context.nextWord.isCorrect !== 'undefined') {
+      // if (this.context.nextWord.isCorrect) {
+      return `The correct translation for ${this.context.currentWord.nextWord} is ${this.context.nextWord.answer} and you guessed ${this.context.guess} `;
     }
   }
+  // }
+
+
+
+
+
   //generate current word
   //generate button?? 
   //get button text
@@ -125,12 +132,16 @@ this.context.setCurrentWord(this.context.nextWord)
             />
             <Button type='submit'>Submit your answer</Button>
           </form>
-          <p>{this.getResponse()}</p>
+          <h2>{this.getResponse()}</h2>
           <h2>Translate the word:</h2><span>{this.context.nextWord ? this.context.nextWord.nextWord : null}</span>
-          <p className='DisplayScore'>Your total score is: {this.context.nextWord ? this.context.nextWord.totalScore : null}</p>
+          <div className='DisplayScore'>
+            <p>Your total score is: {this.context.nextWord ? this.context.nextWord.totalScore : null}</p>
+          </div>
           <p>You have answered this word correctly {this.context.nextWord ? this.context.nextWord.wordCorrectCount : null} times.</p>
           <p>You have answered this word incorrectly {this.context.nextWord ? this.context.nextWord.wordIncorrectCount : null} times.</p>
-          <p>{this.getResponseFeedback()}</p>
+          <div className='DisplayFeedback'>
+            <p>{this.getResponseFeedback()}</p>
+          </div>
         </main>
       </div>
     );
