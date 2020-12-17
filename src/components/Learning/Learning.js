@@ -11,7 +11,8 @@ class Learning extends Component {
   //create state
   state = {
     error: null,
-    response: {},
+    // response: {},
+    results: false
   };
   // add constructor
   constructor(props) {
@@ -46,11 +47,11 @@ class Learning extends Component {
   }
 
   // submit form / guess fetch request
-
   submitForm(event) {
     event.preventDefault();
     this.context.setCurrentWord(this.context.nextWord);
     this.context.setGuess(event.target.userinput.value);
+    this.setState({results: !this.state.results})
 
     fetch(`${config.API_ENDPOINT}/language/guess`,
       {
@@ -85,7 +86,7 @@ class Learning extends Component {
     }
   }
 
-
+  //'the correct response was'
   getResponseFeedback() {
     // let translation = this.context.words && this.context.currentWord ? this.context.words.find(word => word.original === this.context.currentWord.nextWord) : null;
     console.log(this.context.guess);
@@ -97,13 +98,27 @@ class Learning extends Component {
   }
   // }
 
+//get button text - make button 'try another word' or 'submit your answer' 
+  getButtonText() {
+    if (this.state.results) {
+    return 'Try another word!'
+  } else return 'Submit your answer'
+}
 
 
 
+  //generate current word so that there is a differentation between current and next?? 
+//   getCurrentWord() {
+//     if (this.state.results) {
+//     return this.context.currentWord.nextWord
+//     }
+//     else {
+//       return this.context.nextWord ? this.context.nextWord.nextWord : null
+//     }
+// }
 
-  //generate current word
-  //generate button?? 
-  //get button text
+
+  //generate button?? - make the button move to the next word
   //goto next
 
 
@@ -130,7 +145,7 @@ class Learning extends Component {
               type="text"
               required
             />
-            <Button type='submit'>Try another word!</Button>
+            <Button type='submit'>{this.getButtonText()}</Button>
           </form>
           <h2>{this.getResponse()}</h2>
           <h3>Translate the word:</h3><span>{this.context.nextWord ? this.context.nextWord.nextWord : null}</span>

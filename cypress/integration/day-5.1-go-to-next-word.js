@@ -42,7 +42,7 @@ describe(`User story: Go to next word`, function() {
               'have.text',
               `Your total score is: ${languageHeadFixture.totalScore}`,
             )
-          cy.get('h2')
+          cy.get('h3')
             .should('have.text', 'Translate the word:')
             .siblings('span')
             .should('have.text', languageHeadFixture.nextWord)
