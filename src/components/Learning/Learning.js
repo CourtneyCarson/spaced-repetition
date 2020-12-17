@@ -92,7 +92,7 @@ class Learning extends Component {
     // console.log(translation)
     if (this.context.nextWord && typeof this.context.nextWord.isCorrect !== 'undefined') {
       // if (this.context.nextWord.isCorrect) {
-      return `The correct translation for ${this.context.currentWord.nextWord} is ${this.context.nextWord.answer} and you guessed ${this.context.guess} `;
+      return `The correct translation for ${this.context.currentWord.nextWord} was ${this.context.nextWord.answer} and you chose ${this.context.guess}!`;
     }
   }
   // }
@@ -130,10 +130,10 @@ class Learning extends Component {
               type="text"
               required
             />
-            <Button type='submit'>Submit your answer</Button>
+            <Button type='submit'>Try another word!</Button>
           </form>
           <h2>{this.getResponse()}</h2>
-          <h2>Translate the word:</h2><span>{this.context.nextWord ? this.context.nextWord.nextWord : null}</span>
+          <h3>Translate the word:</h3><span>{this.context.nextWord ? this.context.nextWord.nextWord : null}</span>
           <div className='DisplayScore'>
             <p>Your total score is: {this.context.nextWord ? this.context.nextWord.totalScore : null}</p>
           </div>
