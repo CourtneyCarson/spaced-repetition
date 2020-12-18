@@ -19,9 +19,13 @@ nav {
   justify-content: flex-end;
   text-align: right;
 }
-
+.spaced-rep-link {
+color:white;
+text-decoration:none;
+}
 
 .text-link {
   color: white;
   text-decoration:none;
+  padding: 0 .5em;
 }

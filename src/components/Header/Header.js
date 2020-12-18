@@ -1,20 +1,20 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import TokenService from '../../services/token-service'
-import UserContext from '../../contexts/UserContext'
-import './Header.css'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import TokenService from '../../services/token-service';
+import UserContext from '../../contexts/UserContext';
+import './Header.css';
 
 class Header extends Component {
-  static contextType = UserContext
+  static contextType = UserContext;
 
   handleLogoutClick = () => {
-    this.context.processLogout()
-  }
+    this.context.processLogout();
+  };
 
   renderLogoutLink() {
     return (
       <div>
-        <span>Hello, 
+        <span>Hello,
           {this.context.user.name}!
         </span>
         <nav>
@@ -25,7 +25,7 @@ class Header extends Component {
           </Link>
         </nav>
       </div>
-    )
+    );
   }
 
   renderLoginLink() {
@@ -37,26 +37,26 @@ class Header extends Component {
         <Link className='text-link'
           to='/register'>Sign up</Link>
       </nav>
-    )
+    );
   }
 
   render() {
     return (
       <header className='header'>
-         <div className="flex header-content">
-        <h1>
-          <Link className='text-link'
-            to='/'>
-            Spaced repetition
+        <div className="flex header-content">
+          <h1>
+            <Link className='spaced-rep-link'
+              to='/'>
+              Spaced repetition
           </Link>
-        </h1>
-        {TokenService.hasAuthToken()
-          ? this.renderLogoutLink()
-          : this.renderLoginLink()}
-      </div>
+          </h1>
+          {TokenService.hasAuthToken()
+            ? this.renderLogoutLink()
+            : this.renderLoginLink()}
+        </div>
       </header>
     );
   }
 }
 
-export default Header
+export default Header;
