@@ -1,190 +1,134 @@
-import React, { Component } from 'react';
-import UserContext from '../../contexts/UserContext';
+import React, {Component} from 'react'
+import TokenService from '../../services/token-service'
+import UserContext from '../../contexts/UserContext'
 import config from '../../config';
-import TokenService from '../../services/token-service';
-import { Input, Label } from '../Form/Form';
-import Button from '../Button/Button';
 import './Learning.css';
 
-
-class Learning extends Component {
-  //create state
+class Learning extends Component{
+    //create state
   state = {
     error: null,
-    // response: {},
-    results: false
-  };
-  // add constructor
+    results: false,
+  }
+ // add constructor
   constructor(props) {
     super(props);
     this.submitForm = this.submitForm.bind(this);
   }
-  //use context
-  static contextType = UserContext;
+ //use context
+  static contextType = UserContext
 
-
-  //component did mount / fetch request
-  componentDidMount() {
-    //fetch request - GET /api/language/head
+   //component did mount / language/head fetch request
+  componentDidMount(){
     return fetch(`${config.API_ENDPOINT}/language/head`,
-      {
-        //headers with authservice/token? 
-        headers: {
-          'authorization': `Bearer ${TokenService.getAuthToken()}`,
-        }
-      })
-      .then(response => response.json())
-      .then(response => {
-        // console.log(response.wordCorrectCount);
-        // console.log(response);
-
-        //current total, total score, correct/incorrect count
-        this.context.setNextWord(response);
-        // this.context.setTotalScore(response.totalScore)
-      })
-      //catch error
-      .catch(error => this.setState({ error: error }));
+    {headers: {
+        'authorization':`bearer ${TokenService.getAuthToken()}`
+      }
+    })
+    .then(res => res.json())
+    .then(res => {
+      this.context.setNextWord(res);
+    })
+    .catch(err => this.setState({error: err}));
   }
 
-  // submit form / guess fetch request
-  submitForm(event) {
-    event.preventDefault();
-    if (this.state.results) {
-      this.setState({ results: !this.state.results });
-    }
-    else {
 
-      this.context.setCurrentWord(this.context.nextWord);
-      this.context.setGuess(event.target.userinput.value);
-      this.setState({ results: !this.state.results });
-    }
-    fetch(`${config.API_ENDPOINT}/language/guess`,
-      {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          'authorization': `Bearer ${TokenService.getAuthToken()}`,
-        },
-        body: JSON.stringify({ guess: event.target.userinput.value })
-      })
-      .then(response => response.json())
-      .then(response => {
-        this.context.setNextWord(response);
-        // this.setState({ response: response });
+  // submit form / language/guess fetch request
+  submitForm(e) {
+    e.preventDefault();
+
+    if(this.state.results){
+      this.setState({results: !this.state.results})
+      setTimeout(() => document.getElementById('learn-guess-input').focus(), 250);
+    } else {
+    this.context.setCurrentWord(this.context.nextWord)
+      this.context.setGuess(e.target.userinput.value)
+      //integral to the input box being hidden
+    this.setState({results: !this.state.results})
+
+    fetch(`${config.API_ENDPOINT}/language/guess`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'authorization':`bearer ${TokenService.getAuthToken()}`
+      },
+      body: JSON.stringify({guess: e.target.userinput.value})
+    })
+      .then(res => res.json())
+      .then(json => {
+        this.context.setNextWord(json);
+        this.showFeedback();
+        document.getElementById('feedback-overlay').focus();
         document.getElementById('learn-guess-input').value = '';
       });
+    }
   }
 
-  // feedback if correct/incorrect?? 
+
+
+// feedback if correct/incorrect?? 
   //clearFeedback?? 
   // get response text 
+
+  showFeedback() {
+    const el = document.getElementById('feedback-overlay');
+    el.classList.remove('invisible');
+    setTimeout(() => {el.classList.add('invisible')}, 2500);
+  }
+
+
+  clearFeedback() {
+    document.getElementById('feedback-overlay').classList.add('invisible');
+    document.getElementsByClassName('btn')[0].focus();
+  }
+
   getResponse() {
-    if (this.context.nextWord && typeof this.context.nextWord.isCorrect !== undefined) {
-      if (this.context.nextWord.isCorrect) {
-        console.log('Congrats');
+    if(this.context.nextWord)
+     if(typeof this.context.nextWord.isCorrect !== 'undefined') {
+      if(this.context.nextWord.isCorrect) {
         return 'You were correct! :D';
-      }
-      else {
-        console.log('Incorrect!');
+      } else {
         return 'Good try, but not quite right :(';
       }
     }
   }
 
   //'the correct response was'
-  getResponseFeedback() {
-    // let translation = this.context.words && this.context.currentWord ? this.context.words.find(word => word.original === this.context.currentWord.nextWord) : null;
-    console.log(this.context.guess);
-    // console.log(translation)
-    if (this.context.nextWord && typeof this.context.nextWord.isCorrect !== 'undefined') {
-      // if (this.context.nextWord.isCorrect) {
-      return `The correct translation for ${this.context.currentWord.nextWord} was ${this.context.nextWord.answer} and you chose ${this.context.guess}!`;
+  getResponseFeedback(){
+    if(this.context.nextWord && typeof this.context.nextWord.isCorrect !== 'undefined'){
+        return `The correct translation for ${this.context.currentWord.nextWord} was ${this.context.nextWord.answer} and you chose ${this.context.guess}!`
     }
   }
-  // }
 
-  //get button text - make button 'try another word' or 'submit your answer' 
-  getButtonText() {
-    if (this.state.results) {
-      return 'Try another word!';
+ //get button text - make button 'try another word' or 'submit your answer' 
+  getButtonText(){
+    if(this.state.results){
+      return 'Try another word!'
     } else return 'Submit your answer';
   }
 
 
-
-  //generate current word so that there is a differentation between current and next?? 
-  getCurrentWord() {
-    if (this.state.results) {
-      return this.context.currentWord.nextWord;
-    }
-    else {
-      return this.context.nextWord ? this.context.nextWord.nextWord : null;
-    }
-  }
-
-
-  //generate button?? - make the button move to the next word
-  buttonMoveNext() {
-    if (this.state.results) {
-      return <button onClick={() => this.moveToNextWord}>{this.getButtonText}</button>;
-    }
-    else {
-      return <button type='submit'>{this.getButtonText()}</button>;
-    }
-  }
-
-  setRequired() {
-    if (this.state.results) {
-    return null
-    } 
-    else {
-      return 'required'
-    }
-}
-  //goto next
-
-
-
-  render() {
-    //display next word 
-    //display current total score -- this.context.totalScore
-    //display form with input input#learn-guess-input 
-    //display correct & incorrect count for word -- this.context.correctCount? wordCorrectCount - from response
-    //button 
-    // console.log(this.context.nextWord);
-    // console.log(this.context.totalScore);
-
+  render(){
     return (
-      <div className='learning'>
-        <main>
-        <h3>Translate the word:</h3><span>{this.context.nextWord ? this.state.results ? this.context.currentWord.nextWord: this.context.nextWord.nextWord : null}</span>
-          <form onSubmit={this.submitForm}>
-            <Label htmlFor='learn-guess-input' className='learning-form-text'>
-              What's the translation for this word?
-          </Label>
-            <Input className='text-box'
-              id='learn-guess-input'
-              name="userinput"
-              type="text"
-              required={this.state.results ? false : true}
-            />
-            <Button type='submit'>{this.getButtonText()}</Button>
-          </form>
-          <h2>{this.getResponse()}</h2>
-          <div className='DisplayScore'>
-            <p>Your total score is: {this.context.nextWord ? this.context.nextWord.totalScore : null}</p>
-          </div>
-          <p>You have answered this word correctly {this.context.nextWord ? this.context.nextWord.wordCorrectCount : null} times.</p>
-          <p>You have answered this word incorrectly {this.context.nextWord ? this.context.nextWord.wordIncorrectCount : null} times.</p>
-          <div className='DisplayFeedback'>
-            <p>{this.getResponseFeedback()}</p>
-          </div>
-        </main>
+      <div className="learning">
+        <h2>Translate the word:</h2><span>{this.context.nextWord ?  this.state.results ? this.context.currentWord.nextWord : this.context.nextWord.nextWord : null}</span>
+        <h3 id="feedback-overlay" className="invisible" onClick={this.clearFeedback}>{this.getResponse()}</h3>
+        <div className="DisplayScore">
+          <p>Your total score is: {this.context.nextWord ? this.context.nextWord.totalScore : null}</p>
+        </div>
+        <div className="DisplayFeedback">
+          <p className={this.state.results ? '' : 'hidden'}>{this.getResponseFeedback()}</p>
+        </div>
+        <form onSubmit={this.submitForm}>
+          <label htmlFor="learn-guess-input" className={this.state.results ? 'hidden' : ''}>What's the translation for this word?</label>
+          <input autoFocus={true} id="learn-guess-input" name="userinput" type="text" required={this.state.results ? false : true} className={this.state.results ? 'hidden' : ''} maxLength="25"></input>
+          <button className="btn" type="submit">{this.getButtonText()}</button>
+        </form>
+        <p className="word-count">You have answered this word correctly {this.state.results ? this.context.currentWord.wordCorrectCount : this.context.nextWord ? this.context.nextWord.wordCorrectCount : null} times.</p>
+        <p className="word-count">You have answered this word incorrectly {this.state.results ? this.context.currentWord.wordIncorrectCount : this.context.nextWord ? this.context.nextWord.wordIncorrectCount : null} times.</p>
       </div>
     );
   }
 }
 
-
-
-export default Learning;
+export default Learning
