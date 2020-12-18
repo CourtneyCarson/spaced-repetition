@@ -17,6 +17,7 @@
   padding: .3em .6em;
   margin: .3em;
   font-size: 1.5em;
+  border: 3px solid transparent;
   }
  
 .form-text {
