@@ -1,6 +1,8 @@
 header {
   padding:20px;
-  background-color: red;
+  /* background-color:red; */
+  background:rgb(0, 191, 255, .075);
+
 }
 
 .header-content {
@@ -12,6 +14,14 @@ header {
 
 .header-content > * { flex: 3 }
 
+.hello {
+  color: yellow;
+  font-weight:bold;
+  font-size: large;
+  /* text-shadow: 0px 5px 0px black; */
+}
+
+
 nav {
   min-width: 13em;
   display: flex;
@@ -22,7 +32,15 @@ nav {
 .spaced-rep-link {
 color:white;
 text-decoration:none;
+/* text-shadow: 0px 5px 0px #2f647d; */
 }
+
+/* .spaced-rep-link a:hover {
+    background: white;
+    color: black;
+  } */
+
+
 
 .text-link {
   color: white;
