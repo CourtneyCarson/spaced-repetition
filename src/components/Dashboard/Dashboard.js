@@ -80,7 +80,7 @@ class Dashboard extends Component {
       <div className='dashboard'>
         <h2 className='dash-language-header'>{this.context.language ? this.context.language.name : null}</h2>
         {/* link to learning page w/ button */}
-        <Link to='/learn'>
+        <Link to='/learn' className='start-btn'>
           <Button className='start-button'>Start Practicing</Button>
         </Link>
         <h3 className='dash-list-title'>Words To Practice</h3>

@@ -1,10 +1,27 @@
-nav {
-  /* background: red; */
-  background: url('https://live.staticflickr.com/65535/50719937287_34414a2acf_w.jpg');
-  height: 3em;
-  
+header {
+  padding:20px;
+  background-color: red;
 }
+
+.header-content {
+  justify-content: space-between;
+  align-items: center;
+  max-width: 65em;
+  margin: 0 auto;
+}
+
+.header-content > * { flex: 3 }
+
+nav {
+  min-width: 13em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: right;
+}
+
 
 .text-link {
   color: white;
+  text-decoration:none;
 }

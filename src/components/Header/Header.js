@@ -14,8 +14,8 @@ class Header extends Component {
   renderLogoutLink() {
     return (
       <div>
-        <span>
-          {this.context.user.name}
+        <span>Hello, 
+          {this.context.user.name}!
         </span>
         <nav>
           <Link className='text-link'
@@ -43,6 +43,7 @@ class Header extends Component {
   render() {
     return (
       <header className='header'>
+         <div className="flex header-content">
         <h1>
           <Link className='text-link'
             to='/'>
@@ -52,6 +53,7 @@ class Header extends Component {
         {TokenService.hasAuthToken()
           ? this.renderLogoutLink()
           : this.renderLoginLink()}
+      </div>
       </header>
     );
   }
