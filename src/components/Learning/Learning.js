@@ -66,22 +66,20 @@ class Learning extends Component{
 
 
 
-// feedback if correct/incorrect?? 
-  //clearFeedback?? 
-  // get response text 
-
+// feedback if correct/incorrect
   showFeedback() {
     const el = document.getElementById('feedback-overlay');
     el.classList.remove('invisible');
     setTimeout(() => {el.classList.add('invisible')}, 2500);
   }
 
-
+  //clearFeedback?? 
   clearFeedback() {
     document.getElementById('feedback-overlay').classList.add('invisible');
     document.getElementsByClassName('btn')[0].focus();
   }
 
+  //get the response text 
   getResponse() {
     if(this.context.nextWord)
      if(typeof this.context.nextWord.isCorrect !== 'undefined') {

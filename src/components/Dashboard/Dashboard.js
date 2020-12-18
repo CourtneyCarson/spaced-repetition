@@ -6,10 +6,6 @@ import { Link } from 'react-router-dom';
 import './Dashboard.css'
 import Button from '../Button/Button'
 
-// correct answer count 
-//incorrect answer count 
-//start practicing button 
-// original word 
 
 function ListOfWords(props) {
   return (
@@ -28,17 +24,12 @@ class Dashboard extends Component {
   //create state
   state = {
     error: null,
-    // loading: true,
   };
   //use context 
   static contextType = UserContext;
 
   //componenet did mount
   //fetch /language 
-  //headers with authtservice/token
-  //then this.context.setlang setwords setstate loading:false
-  //catch error
-
   componentDidMount() {
     return fetch(`${config.API_ENDPOINT}/language`,
       {
@@ -48,17 +39,15 @@ class Dashboard extends Component {
       })
       .then(response => response.json())
       .then(response => {
-        console.log(response);
+        // console.log(response);
         // console.log(this.context)
         this.context.setLanguage(response.language);
         this.context.setWords(response.words);
-        // this.setState({ loading: false });
       })
       .catch(error => this.setState({ error: error }));
   }
 
-  //function to get list of words??? 
-  // loop/foreach???? 
+  //function to get list of words
   generateWordList(words) {
     // set empty array
     let result = [];
@@ -74,7 +63,7 @@ class Dashboard extends Component {
 
 
   render() {
-    console.log(this.context);
+    // console.log(this.context);
     return (
       //context.language if/else statement
       <div className='dashboard'>
